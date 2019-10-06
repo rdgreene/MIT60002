@@ -22,28 +22,8 @@ def dp_make_weight(egg_weights, target_weight, memo = {}):
     
     Returns: int, smallest number of eggs needed to make target weight
     """
-
-    # base case if target weight is zero!
-    if target_weight == 0:
-        return 0
-
-    # try to get solution for current target_weight from memo
-    try:
-        return memo[target_weight]
-    # if unsuccesful apply recursion to get solution
-    except KeyError:
-        solutions = []
-        for e in egg_weights:
-            # weight if we choose this egg?
-            new_weight = target_weight - e
-            # always true for at least one weight if there is always a egg of value 1
-            if new_weight >= 0:
-                solutions.append(1 + dp_make_weight(egg_weights, new_weight, memo))
-        best_solution = min(solutions)
-        memo[target_weight] = best_solution
-
-    return best_solution
-
+    # TODO: Your code here
+    pass
 
 # EXAMPLE TESTING CODE, feel free to add more if you'd like
 if __name__ == '__main__':
