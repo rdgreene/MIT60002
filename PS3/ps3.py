@@ -6,6 +6,7 @@
 
 import math
 import random
+import numpy as np
 
 import ps3_visualize
 import pylab
@@ -81,8 +82,21 @@ class RectangularRoom(object):
         height: an integer > 0
         dirt_amount: an integer >= 0
         """
-        raise NotImplementedError
+
+        # NOTE: DONE
+        self.width = width
+        self.height = height
+
+        self.room = np.empty((height, width))
+
+        # generator to enumerate all possible array positions for iteration
+        positions = ((i, j) for i in range(height) for j in range(width))
+
+        # populate all positions in room with dirt
+        for i, j in positions:
+            self.room[i, j] = dirt_amount
     
+
     def clean_tile_at_position(self, pos, capacity):
         """
         Mark the tile under the position pos as cleaned by capacity amount of dirt.
@@ -96,7 +110,11 @@ class RectangularRoom(object):
         Note: The amount of dirt on each tile should be NON-NEGATIVE.
               If the capacity exceeds the amount of dirt on the tile, mark it as 0.
         """
-        raise NotImplementedError
+        
+        # NOTE: DONE
+        dirt_amount = self.get_dirt_amount(pos[0], pos[1])
+        self.room[pos[0], pos[1]] = max(dirt_amount - capacity, 0)
+        
 
     def is_tile_cleaned(self, m, n):
         """
@@ -112,13 +130,18 @@ class RectangularRoom(object):
         Note: The tile is considered clean only when the amount of dirt on this
               tile is 0.
         """
-        raise NotImplementedError
+
+        # NOTE: DONE
+        # return True if value at m, n is zero
+        return not bool(self.room[m, n])
 
     def get_num_cleaned_tiles(self):
         """
         Returns: an integer; the total number of clean tiles in the room
         """
-        raise NotImplementedError
+
+        # NOTE: DONE
+        return self.room.size - np.count_nonzero(self.room)
         
     def is_position_in_room(self, pos):
         """
@@ -140,7 +163,9 @@ class RectangularRoom(object):
 
         Returns: an integer
         """
-        raise NotImplementedError
+        
+        # NOTE: DONE
+        return self.room[m, n]
         
     def get_num_tiles(self):
         """
