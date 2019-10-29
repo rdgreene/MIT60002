@@ -112,8 +112,9 @@ class RectangularRoom(object):
         """
         
         # NOTE: DONE
-        dirt_amount = self.get_dirt_amount(pos[0], pos[1])
-        self.room[pos[0], pos[1]] = max(dirt_amount - capacity, 0)
+        x, y = math.floor(pos.get_x()), math.floor(pos.get_y())
+        dirt_amount = self.get_dirt_amount(y, x)
+        self.room[y, x] = max(dirt_amount - capacity, 0)
         
 
     def is_tile_cleaned(self, m, n):
@@ -150,7 +151,13 @@ class RectangularRoom(object):
         pos: a Position object.
         Returns: True if pos is in the room, False otherwise.
         """
-        raise NotImplementedError
+        x, y = math.floor(pos.get_x()), math.floor(pos.get_y())
+        try:
+            self.room[y, x]
+        except IndexError:
+            return False
+        else:
+            return True
         
     def get_dirt_amount(self, m, n):
         """
@@ -213,7 +220,16 @@ class Robot(object):
         capacity: a positive interger; the amount of dirt cleaned by the robot 
                   in a single time-step
         """
-        raise NotImplementedError
+        # NOTE: DONE    
+        self.speed = speed
+        self.capacity = capacity
+        self.room = room
+        # initialise robot with random direction
+        self.direction = random.uniform(0,360)
+        # initialise robot with random position
+        h, w = room.shape[0], room.shape[1]
+        x, y = random.uniform(0, w), random.uniform(0, h)
+        self.pos = Position(x, y)
 
     def get_robot_position(self):
         """
@@ -226,7 +242,7 @@ class Robot(object):
         Returns: a float d giving the direction of the robot as an angle in
         degrees, 0.0 <= d < 360.0.
         """
-        raise NotImplementedError
+        return self.direction
 
     def set_robot_position(self, position):
         """
